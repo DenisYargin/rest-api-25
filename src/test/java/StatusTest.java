@@ -1,6 +1,7 @@
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.get;
+import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
 
 public class StatusTest {
@@ -8,6 +9,24 @@ public class StatusTest {
     void totalcheck5(){
         get("https://selenoid.autotests.cloud/status")
                 .then()
+                .body("total", is(5));
+    }
+
+    @Test
+    void totalcheck5WithResponseLogs(){
+        get("https://selenoid.autotests.cloud/status")
+                .then()
+                .log().all()
+                .body("total", is(5));
+    }
+
+    @Test
+    void totalcheck5WithLogs(){
+        given()
+                .log().all()
+                .get("https://selenoid.autotests.cloud/status")
+                .then()
+                .log().all()
                 .body("total", is(5));
     }
 }
